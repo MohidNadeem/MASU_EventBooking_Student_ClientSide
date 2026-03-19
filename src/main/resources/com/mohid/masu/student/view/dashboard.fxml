@@ -44,15 +44,37 @@
                     </children>
                 </VBox>
 
-                <Button text="Upcoming Events" onAction="#showUpcomingEvents" styleClass="sidebar-btn" maxWidth="1.7976931348623157E308"/>
-                <Button text="My Bookings" onAction="#showMyBookings" styleClass="sidebar-btn" maxWidth="1.7976931348623157E308"/>
-                <Button text="Events I Published" onAction="#showPublishedEvents" styleClass="sidebar-btn" maxWidth="1.7976931348623157E308"/>
-                <Button text="Create Event" onAction="#showCreateEvent" styleClass="sidebar-btn" maxWidth="1.7976931348623157E308"/>
-                <Button text="Update Password" onAction="#showUpdatePassword" styleClass="sidebar-btn" maxWidth="1.7976931348623157E308"/>
+                <Button text="Upcoming Events"
+                        onAction="#showUpcomingEvents"
+                        styleClass="sidebar-btn"
+                        maxWidth="1.7976931348623157E308"/>
+
+                <Button text="My Bookings"
+                        onAction="#showMyBookings"
+                        styleClass="sidebar-btn"
+                        maxWidth="1.7976931348623157E308"/>
+
+                <Button text="Events I Published"
+                        onAction="#showPublishedEvents"
+                        styleClass="sidebar-btn"
+                        maxWidth="1.7976931348623157E308"/>
+
+                <Button text="Create Event"
+                        onAction="#showCreateEvent"
+                        styleClass="sidebar-btn"
+                        maxWidth="1.7976931348623157E308"/>
+
+                <Button text="Update Password"
+                        onAction="#showUpdatePassword"
+                        styleClass="sidebar-btn"
+                        maxWidth="1.7976931348623157E308"/>
 
                 <Region VBox.vgrow="ALWAYS"/>
 
-                <Button text="Logout" onAction="#handleLogout" styleClass="logout-btn" maxWidth="1.7976931348623157E308"/>
+                <Button text="Logout"
+                        onAction="#handleLogout"
+                        styleClass="logout-btn"
+                        maxWidth="1.7976931348623157E308"/>
             </children>
         </VBox>
     </left>

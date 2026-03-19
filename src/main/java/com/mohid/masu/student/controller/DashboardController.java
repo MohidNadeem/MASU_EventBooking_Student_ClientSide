@@ -4,11 +4,11 @@ import com.mohid.masu.student.App;
 import com.mohid.masu.student.session.StudentSession;
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -72,44 +72,46 @@ public class DashboardController {
     private void showMyBookings() {
         pageTitleLabel.setText("My Bookings");
         pageSubtitleLabel.setText("View all events you have booked and manage them from here.");
-
-        contentArea.getChildren().clear();
-        Label placeholder = new Label("My Bookings content will appear here.");
-        placeholder.getStyleClass().add("page-subtitle");
-        contentArea.getChildren().add(placeholder);
+        loadContent("/com/mohid/masu/student/view/myBookings.fxml");
     }
 
     @FXML
     private void showPublishedEvents() {
         pageTitleLabel.setText("Events I Published");
         pageSubtitleLabel.setText("Manage the events you created and published.");
-
-        contentArea.getChildren().clear();
-        Label placeholder = new Label("Published Events content will appear here.");
-        placeholder.getStyleClass().add("page-subtitle");
-        contentArea.getChildren().add(placeholder);
+        loadContent("/com/mohid/masu/student/view/publishedEvents.fxml");
     }
 
     @FXML
     private void showCreateEvent() {
         pageTitleLabel.setText("Create Event");
         pageSubtitleLabel.setText("Publish a new event with details, location, and map support.");
-
-        contentArea.getChildren().clear();
-        Label placeholder = new Label("Create Event content will appear here.");
-        placeholder.getStyleClass().add("page-subtitle");
-        contentArea.getChildren().add(placeholder);
+        loadContent("/com/mohid/masu/student/view/createEvent.fxml");
     }
 
     @FXML
     private void showUpdatePassword() {
         pageTitleLabel.setText("Update Password");
         pageSubtitleLabel.setText("Change your current password securely.");
+        loadContent("/com/mohid/masu/student/view/updatePassword.fxml");
+    }
 
-        contentArea.getChildren().clear();
-        Label placeholder = new Label("Update Password content will appear here.");
-        placeholder.getStyleClass().add("page-subtitle");
-        contentArea.getChildren().add(placeholder);
+    private void loadContent(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent view = loader.load();
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(view);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            contentArea.getChildren().clear();
+            Label errorLabel = new Label("Failed to load content.");
+            errorLabel.getStyleClass().add("page-subtitle");
+            contentArea.getChildren().add(errorLabel);
+        }
     }
 
     @FXML
@@ -137,7 +139,8 @@ public class DashboardController {
                 try {
                     App.setRoot("/com/mohid/masu/student/view/login");
                 } catch (IOException ex) {
-                    System.getLogger(DashboardController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    System.getLogger(DashboardController.class.getName())
+                            .log(System.Logger.Level.ERROR, (String) null, ex);
                 }
             });
 
@@ -156,7 +159,6 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
-
 
     private String getInitials(String fullName) {
         if (fullName == null || fullName.isBlank()) {

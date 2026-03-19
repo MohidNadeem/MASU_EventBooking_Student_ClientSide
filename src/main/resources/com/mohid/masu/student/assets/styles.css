@@ -75,17 +75,16 @@
 }
 
 .primary-btn {
-    -fx-background-color: linear-gradient(to right, #2E7D32, #43A047);
+    -fx-background-color: linear-gradient(to right, #56ab2f, #a8e063);
     -fx-text-fill: white;
-    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-background-radius: 14;
-    -fx-padding: 12 18 12 18;
+    -fx-background-radius: 12;
+    -fx-padding: 10 18 10 18;
     -fx-cursor: hand;
 }
 
 .primary-btn:hover {
-    -fx-background-color: linear-gradient(to right, #256828, #388E3C);
+    -fx-opacity: 0.92;
 }
 
 .error-label {
@@ -271,4 +270,24 @@
 
 .dashboard-divider {
     -fx-opacity: 0.55;
+}
+
+.field-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #295c3b;
+}
+
+.modern-field {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #d6e7d7;
+    -fx-border-radius: 12;
+    -fx-padding: 10 14 10 14;
+    -fx-font-size: 13px;
+}
+
+.modern-field:focused {
+    -fx-border-color: #67b26f;
+    -fx-background-color: white;
 }

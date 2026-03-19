@@ -58,7 +58,7 @@
 
                                 <Label fx:id="messageLabel" text="" wrapText="true"/>
 
-                                <Button text="Login to Dashboard"
+                                <Button text="Login"
                                         onAction="#handleLogin"
                                         maxWidth="1.7976931348623157E308"
                                         styleClass="primary-btn"/>
