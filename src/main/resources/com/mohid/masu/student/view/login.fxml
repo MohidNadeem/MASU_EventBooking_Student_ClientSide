@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mohid.masu.student.controller.LoginController"
+      stylesheets="@../assets/styles.css"
+      styleClass="app-bg">
+
+    <children>
+        <VBox prefWidth="520.0" spacing="18.0" alignment="CENTER_LEFT" styleClass="left-panel">
+            <padding>
+                <Insets top="50" right="50" bottom="50" left="50"/>
+            </padding>
+
+            <children>
+                <Label text="MASU" styleClass="brand-title"/>
+                <Label text="My Artificial Student Union" styleClass="brand-subhead"/>
+                <Label text="Discover events, manage bookings, and publish your own campus experiences." wrapText="true" styleClass="brand-subtitle"/>
+            </children>
+        </VBox>
+
+        <StackPane HBox.hgrow="ALWAYS" styleClass="right-panel">
+            <children>
+                <VBox alignment="CENTER" spacing="20.0" fillWidth="true">
+                    <children>
+                        <VBox maxWidth="420.0" spacing="16.0" alignment="CENTER_LEFT" styleClass="login-card">
+                            <padding>
+                                <Insets top="36" right="36" bottom="36" left="36"/>
+                            </padding>
+
+                            <children>
+                                <Label text="Student Login" styleClass="card-title"/>
+                                <Label text="Enter your student credentials to continue." styleClass="card-subtitle"/>
+
+                                <VBox spacing="8">
+                                    <children>
+                                        <Label text="Username" styleClass="field-label"/>
+                                        <TextField fx:id="usernameField" promptText="Enter username" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="8">
+                                    <children>
+                                        <Label text="Password" styleClass="field-label"/>
+                                        <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <Label fx:id="messageLabel" text="" wrapText="true"/>
+
+                                <Button text="Login to Dashboard"
+                                        onAction="#handleLogin"
+                                        maxWidth="1.7976931348623157E308"
+                                        styleClass="primary-btn"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </children>
+            <HBox.margin>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </HBox.margin>
+        </StackPane>
+    </children>
+</HBox>
