@@ -18,4 +18,5 @@ module com.mohid.masu.student {
     exports com.mohid.masu.student.service;
     exports com.mohid.masu.student.dto;
     exports com.mohid.masu.student.session;
+    exports com.mohid.masu.student.model;
 }

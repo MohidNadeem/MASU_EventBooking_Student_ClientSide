@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.mohid.masu.student.controller.EventDetailsController"
+            stylesheets="@../assets/styles.css"
+            fitToWidth="true"
+            hbarPolicy="NEVER">
+
+    <content>
+        <VBox spacing="20" styleClass="details-page-root">
+            <padding>
+                <Insets top="24" right="24" bottom="24" left="24"/>
+            </padding>
+
+            <children>
+                <VBox spacing="12" styleClass="details-hero-card">
+                    <children>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <children>
+                                <Label fx:id="typeBadgeLabel" text="Workshop" styleClass="event-type-badge"/>
+                                <Label fx:id="genderBadgeLabel" text="⚥ BOTH" styleClass="event-gender-badge"/>
+                                <Label fx:id="headerRatingLabel" text="No Ratings Marked" styleClass="rating-badge"/>
+                            </children>
+                        </HBox>
+
+                        <Label fx:id="titleLabel" text="Event Title" styleClass="details-main-title"/>
+                        <Label fx:id="subtitleLabel" text="Venue, Location" styleClass="details-subtitle"/>
+                    </children>
+                </VBox>
+
+                <VBox spacing="14" styleClass="content-card">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <children>
+                        <Label text="Description" styleClass="section-title"/>
+                        <Separator/>
+                        <Label fx:id="descriptionLabel"
+                               text="Description goes here..."
+                               wrapText="true"
+                               styleClass="details-description-text"/>
+                    </children>
+                </VBox>
+
+                <HBox spacing="18">
+                    <children>
+                        <VBox spacing="14" styleClass="content-card" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                            </padding>
+
+                            <children>
+                                <HBox alignment="CENTER_LEFT">
+                                    <children>
+                                        <Label text="Event Information" styleClass="section-title"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="statusBadgeLabel" text="ACTIVE" styleClass="status-badge"/>
+                                    </children>
+                                </HBox>
+
+                                <Separator/>
+
+                                <HBox alignment="CENTER_LEFT">
+                                    <children>
+                                        <Label fx:id="dateTimeLabel" styleClass="details-info-line"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="durationBadgeLabel" text="15 minutes" styleClass="subtle-badge"/>
+                                    </children>
+                                </HBox>
+
+                                <Label fx:id="costLabel" styleClass="details-info-line"/>
+
+                                <HBox alignment="CENTER_LEFT">
+                                    <children>
+                                        <Label fx:id="capacityLabel" styleClass="details-info-line"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="capacityRemainingBadgeLabel" styleClass="remaining-badge"/>
+                                    </children>
+                                </HBox>
+
+                                <HBox alignment="CENTER_LEFT">
+                                    <children>
+                                        <Label fx:id="alumniSlotsLabel" styleClass="details-info-line"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="alumniRemainingBadgeLabel" styleClass="remaining-badge"/>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="14" styleClass="content-card" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                            </padding>
+
+                            <children>
+                                <Label text="Weather" styleClass="section-title"/>
+                                <Separator/>
+
+                                <Label fx:id="weatherMainLabel" text="☀ Clear Sky" styleClass="weather-main-text"/>
+                                <Label fx:id="weatherTempLabel" styleClass="details-info-line"/>
+                                <Label fx:id="weatherFeelsLabel" styleClass="details-info-line"/>
+                                <Label fx:id="weatherHumidityLabel" styleClass="details-info-line"/>
+                                <Label fx:id="weatherWindLabel" styleClass="details-info-line"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <HBox spacing="18">
+                    <children>
+                        <VBox spacing="14" styleClass="content-card" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                            </padding>
+
+                            <children>
+                                <Label text="Location Details" styleClass="section-title"/>
+                                <Separator/>
+                                <Label fx:id="venueLabel" styleClass="details-info-line"/>
+                                <Label fx:id="postalCodeLabel" styleClass="details-info-line"/>
+                                <Label fx:id="countryLabel" styleClass="details-info-line"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="14" styleClass="content-card" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                            </padding>
+
+                            <children>
+                                <HBox alignment="CENTER_LEFT">
+                                    <children>
+                                        <Label text="Publisher Information" styleClass="section-title"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="publisherStatusBadgeLabel" text="ACTIVE" styleClass="status-badge"/>
+                                    </children>
+                                </HBox>
+
+                                <Separator/>
+                                <Label fx:id="publisherUsernameLabel" styleClass="details-info-line"/>
+                                <Label fx:id="publisherNameLabel" styleClass="details-info-line"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <VBox spacing="14" styleClass="content-card">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <children>
+                        <Label text="Map" styleClass="section-title"/>
+                        <Separator/>
+
+                        <StackPane prefHeight="220" styleClass="map-placeholder-box">
+                            <children>
+                                <VBox alignment="CENTER" spacing="8">
+                                    <children>
+                                        <Label text="Map Preview Area" styleClass="map-placeholder-title"/>
+                                        <Label text="Will add Google Map section later." styleClass="page-subtitle"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </StackPane>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </content>
+</ScrollPane>
