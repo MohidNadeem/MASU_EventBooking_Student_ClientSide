@@ -484,3 +484,12 @@
     -fx-background-color: white;
     -fx-background-radius: 12;
 }
+
+.cancelled-status-badge {
+    -fx-background-color: #fdeaea;
+    -fx-text-fill: #c62828;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-padding: 8 12 8 12;
+    -fx-background-radius: 14;
+}

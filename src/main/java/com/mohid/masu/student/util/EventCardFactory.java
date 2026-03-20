@@ -51,7 +51,10 @@ public class EventCardFactory {
         String remainingText = "ALUMNI".equalsIgnoreCase(currentStatus)
                 ? "Remaining Alumni Slots: " + remainingAlumniSlots
                 : "Remaining Seats: " + remainingSeats;
-
+        
+        String status = obj.optString("status", "");
+        boolean isCancelled = "CANCELLED".equalsIgnoreCase(status);
+        
         HBox row1 = new HBox();
         row1.setAlignment(Pos.CENTER_LEFT);
 
@@ -118,14 +121,28 @@ public class EventCardFactory {
         } else if ("PUBLISHED".equalsIgnoreCase(mode)) {
             Button updateBtn = new Button("Update Event");
             updateBtn.getStyleClass().add("primary-btn");
+            updateBtn.setDisable(isCancelled);
             updateBtn.setOnAction(e -> onPrimaryAction.accept(obj));
             row5.getChildren().add(updateBtn);
-
+            
         } else if ("UPCOMING".equalsIgnoreCase(mode)) {
             Button bookBtn = new Button("Book Event");
             bookBtn.getStyleClass().add("primary-btn");
             bookBtn.setOnAction(e -> onPrimaryAction.accept(obj));
             row5.getChildren().add(bookBtn);
+            
+        } else if ("CANCELLED".equalsIgnoreCase(mode)) {
+            // only View Details button, so no more addition for now
+        }
+        
+        if (isCancelled) {
+            Region spacer5 = new Region();
+            HBox.setHgrow(spacer5, Priority.ALWAYS);
+
+            Label cancelledBadge = new Label("Cancelled");
+            cancelledBadge.getStyleClass().add("cancelled-status-badge");
+
+            row5.getChildren().addAll(spacer5, cancelledBadge);
         }
 
         card.getChildren().addAll(

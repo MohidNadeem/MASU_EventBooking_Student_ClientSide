@@ -367,6 +367,13 @@ public class DashboardController {
         pageSubtitleLabel.setText("Change your current password securely.");
         loadContent("/com/mohid/masu/student/view/updatePassword.fxml");
     }
+    
+    @FXML
+    private void showRecentCancelledEvents() {
+        pageTitleLabel.setText("Recent Cancelled Events");
+        pageSubtitleLabel.setText("View cancelled events from the last 7 days.");
+        loadContent("/com/mohid/masu/student/view/cancelledEvents.fxml");
+    }
 
     private void loadContent(String fxmlPath) {
         try {

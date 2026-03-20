@@ -54,13 +54,18 @@
                         styleClass="sidebar-btn"
                         maxWidth="1.7976931348623157E308"/>
 
-                <Button text="Events I Published"
+                <Button text="Events You Published"
                         onAction="#showPublishedEvents"
                         styleClass="sidebar-btn"
                         maxWidth="1.7976931348623157E308"/>
 
                 <Button text="Create Event"
                         onAction="#showCreateEvent"
+                        styleClass="sidebar-btn"
+                        maxWidth="1.7976931348623157E308"/>
+                
+                <Button text="Recent Cancelled Events"
+                        onAction="#showRecentCancelledEvents"
                         styleClass="sidebar-btn"
                         maxWidth="1.7976931348623157E308"/>
 
