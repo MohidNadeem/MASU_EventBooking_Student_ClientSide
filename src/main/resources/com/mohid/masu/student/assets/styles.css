@@ -472,3 +472,15 @@
     -fx-padding: 8 12 8 12;
     -fx-background-radius: 14;
 }
+
+.date-picker {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #d6e7d7;
+    -fx-border-radius: 12;
+}
+
+.date-picker .text-field {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+}

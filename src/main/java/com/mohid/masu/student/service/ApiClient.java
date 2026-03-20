@@ -103,4 +103,47 @@ public class ApiClient {
 
         return response.toString();
     }
+    
+    private static String readResponse(HttpURLConnection conn) throws Exception {
+        int statusCode = conn.getResponseCode();
+
+        java.io.InputStream inputStream;
+        if (statusCode >= 200 && statusCode < 300) {
+            inputStream = conn.getInputStream();
+        } else {
+            inputStream = conn.getErrorStream();
+        }
+
+        if (inputStream == null) {
+            return "";
+        }
+
+        StringBuilder response = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+        }
+
+        conn.disconnect();
+        return response.toString();
+    }
+    
+    public static String deleteWithBody(String endpoint, String jsonBody) throws Exception {
+        URL url = new URL(BASE_URL + endpoint);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setRequestMethod("DELETE");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(jsonBody.getBytes());
+            os.flush();
+        }
+
+        return readResponse(conn);
+    }
 }

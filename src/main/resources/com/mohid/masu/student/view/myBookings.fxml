@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mohid.masu.student.controller.MyBookingsController"
       stylesheets="@../assets/styles.css"
-      spacing="10">
-    <children>
-        <Label text="My Bookings content will appear here." styleClass="page-subtitle"/>
-    </children>
+      spacing="14"
+      fx:id="rootBox">
 </VBox>

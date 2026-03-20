@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mohid.masu.student.controller.UpdateEventController"
+      stylesheets="@../assets/styles.css"
+      spacing="16"
+      styleClass="dashboard-bg">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <children>
+        <Label text="Update Event" styleClass="page-title"/>
+        <Label text="Editable fields can be updated. Other fields are shown for reference only." styleClass="page-subtitle"/>
+
+        <VBox spacing="16" styleClass="content-card" maxWidth="900">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <children>
+                <!-- Title + Type -->
+                <HBox spacing="12">
+                    <children>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Title" styleClass="field-label"/>
+                                <TextField fx:id="titleField" promptText="Title" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" prefWidth="220">
+                            <children>
+                                <Label text="Type" styleClass="field-label"/>
+                                <TextField fx:id="typeField" promptText="Type" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Date + Time -->
+                <HBox spacing="12">
+                    <children>
+                        <VBox spacing="6" prefWidth="220">
+                            <children>
+                                <Label text="Date" styleClass="field-label"/>
+                                <DatePicker fx:id="datePicker"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Start Time" styleClass="field-label"/>
+                                <TextField fx:id="startTimeField" promptText="Start Time" styleClass="modern-field"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="End Time" styleClass="field-label"/>
+                                <TextField fx:id="endTimeField" promptText="End Time" styleClass="modern-field"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Venue + Location -->
+                <HBox spacing="12">
+                    <children>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Venue" styleClass="field-label"/>
+                                <TextField fx:id="venueField" promptText="Venue" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Location" styleClass="field-label"/>
+                                <TextField fx:id="locationField" promptText="Location" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Country + Postal Code + Gender -->
+                <HBox spacing="12">
+                    <children>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Country" styleClass="field-label"/>
+                                <TextField fx:id="countryField" promptText="Country" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Postal Code" styleClass="field-label"/>
+                                <TextField fx:id="postalCodeField" promptText="Postal Code" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" prefWidth="180">
+                            <children>
+                                <Label text="Gender" styleClass="field-label"/>
+                                <TextField fx:id="genderField" promptText="Gender" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Currency + Duration + Cost -->
+                <HBox spacing="12">
+                    <children>
+                        <VBox spacing="6" prefWidth="160">
+                            <children>
+                                <Label text="Currency" styleClass="field-label"/>
+                                <TextField fx:id="currencyField" promptText="Currency" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" prefWidth="200">
+                            <children>
+                                <Label text="Duration" styleClass="field-label"/>
+                                <TextField fx:id="durationField" promptText="Duration" styleClass="modern-field" disable="true"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Cost" styleClass="field-label"/>
+                                <TextField fx:id="costField" promptText="Cost" styleClass="modern-field"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Capacity + Alumni Slots -->
+                <HBox spacing="12">
+                    <children>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Max Participants" styleClass="field-label"/>
+                                <TextField fx:id="maxParticipantsField" promptText="Max Participants" styleClass="modern-field"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Reserved Alumni Slots" styleClass="field-label"/>
+                                <TextField fx:id="alumniSlotsField" promptText="Reserved Alumni Slots" styleClass="modern-field"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Description -->
+                <VBox spacing="6">
+                    <children>
+                        <Label text="Description" styleClass="field-label"/>
+                        <TextArea fx:id="descriptionArea"
+                                  promptText="Description"
+                                  prefRowCount="4"
+                                  wrapText="true"/>
+                    </children>
+                </VBox>
+
+                <Label fx:id="messageLabel" text="" styleClass="page-subtitle" wrapText="true"/>
+
+                <!-- Buttons -->
+                <HBox spacing="6">
+                    <children>
+                        <Button text="Update Event" onAction="#handleUpdateEvent" styleClass="primary-btn"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Cancel Event" onAction="#handleCancelEvent" styleClass="secondary-btn"/>                    
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>
