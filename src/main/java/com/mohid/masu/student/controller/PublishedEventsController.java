@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.TilePane;
@@ -64,28 +65,35 @@ public class PublishedEventsController {
                 VBox wrapper = new VBox(18);
                 wrapper.setAlignment(Pos.CENTER_LEFT);
 
-                Label emptyLabel = new Label("No published events");
+                Label emptyLabel = new Label("You have no published events");
                 emptyLabel.getStyleClass().add("section-title");
+                wrapper.getChildren().add(emptyLabel);
 
-                VBox addCard = new VBox(10);
-                addCard.getStyleClass().add("empty-state-card");
-                addCard.setAlignment(Pos.CENTER);
-                addCard.setPadding(new javafx.geometry.Insets(24));
-                addCard.setPrefWidth(260);
+                if (!"ALUMNI".equalsIgnoreCase(StudentSession.getStatus())) {
+                    VBox addCard = new VBox(10);
+                    addCard.getStyleClass().add("empty-state-card");
+                    addCard.setAlignment(Pos.CENTER);
+                    addCard.setPadding(new javafx.geometry.Insets(24));
+                    addCard.setPrefWidth(260);
 
-                Label plusLabel = new Label("+");
-                plusLabel.getStyleClass().add("empty-state-plus");
+                    Label plusLabel = new Label("+");
+                    plusLabel.getStyleClass().add("empty-state-plus");
 
-                Label addText = new Label("Add an Event");
-                addText.getStyleClass().add("empty-state-title");
+                    Label addText = new Label("Want to add an Event?");
+                    addText.getStyleClass().add("empty-state-title");
 
-                addCard.getChildren().addAll(plusLabel, addText);
+                    Label subText = new Label("Use the Create Event option from the sidebar");
+                    subText.getStyleClass().add("page-subtitle");
+                    subText.setWrapText(true);
 
-                wrapper.getChildren().addAll(emptyLabel, addCard);
+                    addCard.getChildren().addAll(plusLabel, addText, subText);
+                    wrapper.getChildren().add(addCard);
+                }
+
                 rootBox.getChildren().add(wrapper);
                 return;
             }
-
+            
             ScrollPane scrollPane = new ScrollPane(cardsPane);
             scrollPane.setFitToWidth(true);
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -101,7 +109,7 @@ public class PublishedEventsController {
             rootBox.getChildren().add(errorLabel);
         }
     }
-
+    
     private void openEventDetails(String eventId) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mohid/masu/student/view/eventDetails.fxml"));

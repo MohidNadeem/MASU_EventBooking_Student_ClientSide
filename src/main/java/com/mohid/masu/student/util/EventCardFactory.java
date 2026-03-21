@@ -54,15 +54,22 @@ public class EventCardFactory {
         
         String status = obj.optString("status", "");
         boolean isCancelled = "CANCELLED".equalsIgnoreCase(status);
+        boolean isPassed = "PASSED".equalsIgnoreCase(status);
+        boolean isPopular = obj.optBoolean("isPopular", false);
         
-        HBox row1 = new HBox();
+        HBox row1 = new HBox(10);
         row1.setAlignment(Pos.CENTER_LEFT);
+
+        if (isPopular) {
+            Label popularBadge = new Label("🔥🔥");
+            popularBadge.getStyleClass().add("popular-badge");
+            row1.getChildren().add(popularBadge);
+        }
 
         Label titleLabel = new Label(title);
         titleLabel.getStyleClass().add("event-card-title");
         titleLabel.setWrapText(true);
-        titleLabel.setMaxWidth(240);
-
+        titleLabel.setMaxWidth(190);
         HBox.setHgrow(titleLabel, Priority.ALWAYS);
 
         Region spacer1 = new Region();
@@ -123,12 +130,13 @@ public class EventCardFactory {
             row5.getChildren().add(unbookBtn);
 
         } else if ("PUBLISHED".equalsIgnoreCase(mode)) {
-            Button updateBtn = new Button("Update Event");
-            updateBtn.getStyleClass().add("primary-btn");
-            updateBtn.setDisable(isCancelled);
-            updateBtn.setOnAction(e -> onPrimaryAction.accept(obj));
-            row5.getChildren().add(updateBtn);
-            
+            if (!isCancelled && !isPassed) {
+                Button updateBtn = new Button("Update Event");
+                updateBtn.getStyleClass().add("primary-btn");
+                updateBtn.setOnAction(e -> onPrimaryAction.accept(obj));
+                row5.getChildren().add(updateBtn);
+            }
+                
         } else if ("UPCOMING".equalsIgnoreCase(mode)) {
             Button bookBtn = new Button("Book Event");
             bookBtn.getStyleClass().add("primary-btn");
@@ -139,14 +147,14 @@ public class EventCardFactory {
             // only View Details button, so no more addition for now
         }
         
-        if (isCancelled) {
+        if (isCancelled || isPassed) {
             Region spacer5 = new Region();
             HBox.setHgrow(spacer5, Priority.ALWAYS);
 
-            Label cancelledBadge = new Label("Cancelled");
-            cancelledBadge.getStyleClass().add("cancelled-status-badge");
+            Label statusBadge = new Label(isCancelled ? "Cancelled" : "Passed");
+            statusBadge.getStyleClass().add(isCancelled ? "cancelled-status-badge" : "passed-status-badge");
 
-            row5.getChildren().addAll(spacer5, cancelledBadge);
+            row5.getChildren().addAll(spacer5, statusBadge);
         }
 
         card.getChildren().addAll(

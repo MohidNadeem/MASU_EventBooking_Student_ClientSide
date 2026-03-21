@@ -100,7 +100,8 @@ public class CreateEventController {
         );
 
         genderCombo.getItems().addAll("BOYS", "GIRLS", "BOTH");
-        currencyCombo.getItems().addAll("PKR", "GBP", "USD", "EUR");
+        currencyCombo.getItems().addAll("GBP","USD", "EUR", "PKR");
+        currencyCombo.setValue("GBP");
 
         startTimeField.textProperty().addListener((obs, oldVal, newVal) -> updateDurationFromTime());
         endTimeField.textProperty().addListener((obs, oldVal, newVal) -> updateDurationFromTime());
@@ -254,7 +255,7 @@ public class CreateEventController {
         countryField.clear();
         postalCodeField.clear();
         genderCombo.setValue(null);
-        currencyCombo.setValue(null);
+        currencyCombo.setValue("GBP");
         costField.clear();
         maxParticipantsField.clear();
         alumniSlotsField.clear();

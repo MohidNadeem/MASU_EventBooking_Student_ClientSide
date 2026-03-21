@@ -43,6 +43,9 @@ public class DashboardController {
 
     @FXML
     private VBox contentArea;
+    
+    @FXML
+    private Button createEventBtn;
 
     @FXML
     public void initialize() {
@@ -62,6 +65,11 @@ public class DashboardController {
         studentNameLabel.setText(fullName);
         studentMetaLabel.setText(status + " • " + gender);
         initialsLabel.setText(getInitials(fullName));
+        
+        if ("ALUMNI".equalsIgnoreCase(status) && createEventBtn != null) {
+            createEventBtn.setManaged(false);
+            createEventBtn.setVisible(false);
+        }
 
         showUpcomingEvents();
     }
@@ -72,6 +80,9 @@ public class DashboardController {
         pageSubtitleLabel.setText("Discover, book, and explore student events from here.");
 
         contentArea.getChildren().clear();
+
+        JSONObject popularEvent = null;
+        double bestRatio = -1.0;
 
         try {
             String response = ApiClient.get("/events");
@@ -85,11 +96,64 @@ public class DashboardController {
 
             int activeCount = 0;
 
+            // Finding most popular active event
             for (int i = 0; i < eventsArray.length(); i++) {
                 JSONObject obj = eventsArray.getJSONObject(i);
 
                 String status = obj.optString("status", "");
                 if (!"ACTIVE".equalsIgnoreCase(status)) {
+                    continue;
+                }
+
+                int maxParticipants = obj.optInt("maxParticipants", 0);
+                int remainingSeats = obj.optInt("remainingSeats", 0);
+
+                if (maxParticipants > 10) {
+                    int booked = maxParticipants - remainingSeats;
+                    double ratio = (double) booked / maxParticipants;
+
+                    if (ratio > bestRatio) {
+                        bestRatio = ratio;
+                        popularEvent = obj;
+                    }
+                }
+            }
+
+            // Adding the popular event first
+            if (popularEvent != null) {
+                JSONObject popularCopy = new JSONObject(popularEvent.toString());
+                popularCopy.put("isPopular", true);
+
+                VBox popularCard = EventCardFactory.createCard(
+                        popularCopy,
+                        "UPCOMING",
+                        this::openEventDetails,
+                        eventObj -> {
+                            String eventId = eventObj.optString("id", "");
+                            String title = eventObj.optString("title", "Untitled Event");
+                            String currency = eventObj.optString("currency", "");
+                            double cost = eventObj.optDouble("cost", 0.0);
+
+                            handleBookEvent(eventId, title, currency, cost);
+                        },
+                        null
+                );
+
+                cardsPane.getChildren().add(popularCard);
+                activeCount++;
+            }
+
+            // Adding remaining active events in the normal order
+            for (int i = 0; i < eventsArray.length(); i++) {
+                JSONObject obj = eventsArray.getJSONObject(i);
+
+                String status = obj.optString("status", "");
+                if (!"ACTIVE".equalsIgnoreCase(status)) {
+                    continue;
+                }
+
+                if (popularEvent != null
+                        && obj.optString("id", "").equals(popularEvent.optString("id", ""))) {
                     continue;
                 }
 

@@ -60,7 +60,8 @@
                         styleClass="sidebar-btn"
                         maxWidth="1.7976931348623157E308"/>
 
-                <Button text="Create Event"
+                <Button fx:id="createEventBtn"
+                        text="Create Event"
                         onAction="#showCreateEvent"
                         styleClass="sidebar-btn"
                         maxWidth="1.7976931348623157E308"/>

@@ -494,6 +494,24 @@
     -fx-background-radius: 14;
 }
 
+.passed-status-badge {
+    -fx-background-color: #f1e9ff;
+    -fx-text-fill: #6a1b9a;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-padding: 8 12 8 12;
+    -fx-background-radius: 14;
+}
+
+.popular-badge {
+    -fx-background-color: #fff3cd;
+    -fx-text-fill: #d97706;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-padding: 7 12 7 12;
+    -fx-background-radius: 18;
+}
+
 .list-view {
     -fx-background-color: white;
     -fx-border-color: #d6e7d7;
