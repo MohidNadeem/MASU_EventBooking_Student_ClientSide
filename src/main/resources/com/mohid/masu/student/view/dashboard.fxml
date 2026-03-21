@@ -8,6 +8,10 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -98,6 +102,26 @@
                         <Label fx:id="pageTitleLabel" text="Upcoming Events" styleClass="page-title"/>
                         <Label fx:id="pageSubtitleLabel"
                                text="Discover, book, and explore student events from here."
+                               styleClass="page-subtitle"/>
+                    </children>
+                </VBox>
+
+                <VBox fx:id="filtersContainer" spacing="10" visible="true" managed="true">
+                    <children>
+                        <FlowPane hgap="12" vgap="10">
+                            <children>
+                                <ComboBox fx:id="filterTypeCombo" promptText="Event Type" styleClass="modern-combo" prefWidth="170"/>
+                                <DatePicker fx:id="filterDatePicker" prefWidth="160"/>
+                                <ComboBox fx:id="filterCostCombo" promptText="Cost" styleClass="modern-combo" prefWidth="140"/>
+                                <ComboBox fx:id="filterGenderCombo" promptText="Gender" styleClass="modern-combo" prefWidth="140"/>
+                                <TextField fx:id="filterKeywordField" promptText="Keyword" styleClass="modern-field" prefWidth="170"/>
+                                <Button text="Apply Filters" onAction="#handleApplyFilters" styleClass="primary-btn"/>
+                                <Button text="Clear" onAction="#handleClearFilters" styleClass="secondary-btn"/>
+                            </children>
+                        </FlowPane>
+
+                        <Label fx:id="appliedFiltersLabel"
+                               text="No Filters Applied."
                                styleClass="page-subtitle"/>
                     </children>
                 </VBox>

@@ -10,7 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class EventDetailsController {
 
@@ -48,6 +50,8 @@ public class EventDetailsController {
 
     @FXML private ImageView mapPreviewImage;
     @FXML private Button openMapBtn;
+    
+    @FXML private VBox nearbyLocationsBox;
 
     private double eventLatitude;
     private double eventLongitude;
@@ -122,6 +126,7 @@ public class EventDetailsController {
             loadWeather(root.optString("weather", ""));
             loadPublisherInfo(publisherId);
             updateStaticMapPreview(eventLatitude, eventLongitude);
+            loadNearbyLocations(root.optString("nearbyLocations", ""));
 
             if (openMapBtn != null) {
                 openMapBtn.setDisable(eventLatitude == 0.0 && eventLongitude == 0.0);
@@ -215,7 +220,104 @@ public class EventDetailsController {
             publisherStatusBadgeLabel.setText("-");
         }
     }
+    
+    private void loadNearbyLocations(String nearbyRaw) {
+        try {
+            nearbyLocationsBox.getChildren().clear();
 
+            if (nearbyRaw == null || nearbyRaw.isBlank()) {
+                Label emptyLabel = new Label("No nearby locations available.");
+                emptyLabel.getStyleClass().add("page-subtitle");
+                nearbyLocationsBox.getChildren().add(emptyLabel);
+                return;
+            }
+
+            JSONObject nearbyRoot = new JSONObject(nearbyRaw);
+            JSONArray geonamesArray = nearbyRoot.optJSONArray("geonames");
+
+            if (geonamesArray == null || geonamesArray.isEmpty()) {
+                Label emptyLabel = new Label("No nearby locations available.");
+                emptyLabel.getStyleClass().add("page-subtitle");
+                nearbyLocationsBox.getChildren().add(emptyLabel);
+                return;
+            }
+
+            int limit = Math.min(2, geonamesArray.length());
+
+            for (int i = 0; i < limit; i++) {
+                JSONObject place = geonamesArray.getJSONObject(i);
+
+                String title = place.optString("title", "Nearby Location");
+                String feature = place.optString("feature", "Place");
+                String distance = place.optString("distance", "");
+                String summary = place.optString("summary", "");
+                String wikiUrl = place.optString("wikipediaUrl", "");
+
+                VBox itemCard = new VBox(6);
+                itemCard.getStyleClass().add("nearby-location-item");
+
+                Label nameLabel = new Label(title);
+                nameLabel.getStyleClass().add("nearby-location-title");
+                nameLabel.setWrapText(true);
+
+                String metaText = capitalizeWords(feature);
+                if (!distance.isBlank()) {
+                    metaText += " • " + formatDistance(distance);
+                }
+
+                Label metaLabel = new Label(metaText);
+                metaLabel.getStyleClass().add("nearby-location-meta");
+                metaLabel.setWrapText(true);
+
+                String shortSummary = summary;
+                if (shortSummary != null && shortSummary.length() > 480) {
+                    shortSummary = shortSummary.substring(0, 180).trim() + "...";
+                }
+
+                Label summaryLabel = new Label(
+                        (shortSummary == null || shortSummary.isBlank())
+                                ? "No summary available."
+                                : shortSummary
+                );
+                summaryLabel.getStyleClass().add("page-subtitle");
+                summaryLabel.setWrapText(true);
+
+                itemCard.getChildren().addAll(nameLabel, metaLabel, summaryLabel);
+
+                if (wikiUrl != null && !wikiUrl.isBlank()) {
+
+                    String fullUrl = wikiUrl.startsWith("http")
+                            ? wikiUrl
+                            : "https://" + wikiUrl;
+
+                    Label wikiLabel = new Label("🔗 View on Wikipedia");
+                    wikiLabel.getStyleClass().add("nearby-location-link");
+                    wikiLabel.setCursor(javafx.scene.Cursor.HAND);
+
+                    wikiLabel.setOnMouseClicked(e -> {
+                        try {
+                            java.awt.Desktop.getDesktop().browse(new java.net.URI(fullUrl));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+
+                    itemCard.getChildren().add(wikiLabel);
+                }
+
+                nearbyLocationsBox.getChildren().add(itemCard);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            nearbyLocationsBox.getChildren().clear();
+
+            Label errorLabel = new Label("Failed to load nearby locations.");
+            errorLabel.getStyleClass().add("page-subtitle");
+            nearbyLocationsBox.getChildren().add(errorLabel);
+        }
+    }
+    
     private String makeInfoLine(String label, String value) {
         return label + ": " + value;
     }
@@ -263,5 +365,21 @@ public class EventDetailsController {
         }
 
         return sb.toString().trim();
+    }
+    
+    private String formatDistance(String rawDistanceKm) {
+        try {
+            double km = Double.parseDouble(rawDistanceKm);
+
+            if (km < 1) {
+                int meters = (int) Math.round(km * 1000);
+                return meters + " m away";
+            }
+
+            return String.format("%.2f km away", km);
+
+        } catch (Exception e) {
+            return rawDistanceKm + " km away";
+        }
     }
 }

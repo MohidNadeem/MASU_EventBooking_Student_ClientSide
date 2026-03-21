@@ -13,8 +13,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -46,6 +49,15 @@ public class DashboardController {
     
     @FXML
     private Button createEventBtn;
+    
+    @FXML private VBox filtersContainer;
+
+    @FXML private ComboBox<String> filterTypeCombo;
+    @FXML private DatePicker filterDatePicker;
+    @FXML private ComboBox<String> filterCostCombo;
+    @FXML private ComboBox<String> filterGenderCombo;
+    @FXML private TextField filterKeywordField;
+    @FXML private Label appliedFiltersLabel;
 
     @FXML
     public void initialize() {
@@ -70,22 +82,114 @@ public class DashboardController {
             createEventBtn.setManaged(false);
             createEventBtn.setVisible(false);
         }
+        
+        filterTypeCombo.getItems().addAll(
+        "Seminar", "Workshop", "Sports", "Competition",
+        "Networking", "Entertainment", "Academic", "General"
+        );
 
+        filterCostCombo.getItems().addAll("FREE", "PRICED");
+        filterGenderCombo.getItems().addAll("BOYS", "GIRLS", "BOTH");
+        appliedFiltersLabel.setText("No Filters Applied.");
+        
+        handleClearFilters();
         showUpcomingEvents();
     }
-
+    
     @FXML
-    private void showUpcomingEvents() {
+    public void showUpcomingEvents() {
         pageTitleLabel.setText("Upcoming Events");
         pageSubtitleLabel.setText("Discover, book, and explore student events from here.");
 
+        filtersContainer.setManaged(true);
+        filtersContainer.setVisible(true);
+
+        loadUpcomingEvents(null, null, null, null, null);
+    }
+    
+    @FXML
+    private void handleApplyFilters() {
+        String type = filterTypeCombo.getValue();
+        String date = filterDatePicker.getValue() != null ? filterDatePicker.getValue().toString() : null;
+        String gender = filterGenderCombo.getValue();
+        String costType = filterCostCombo.getValue();
+        String keyword = filterKeywordField.getText() != null ? filterKeywordField.getText().trim() : null;
+
+        loadUpcomingEvents(type, date, gender, costType, keyword);
+    }
+
+    @FXML
+    private void handleClearFilters() {
+        resetCombo(filterTypeCombo, "Event Type");
+        resetCombo(filterCostCombo, "Cost");
+        resetCombo(filterGenderCombo, "Gender");
+        
+        filterDatePicker.setValue(null);
+        filterKeywordField.clear();
+        filterKeywordField.setPromptText("Keyword");
+        
+        appliedFiltersLabel.setText("No Filters Applied.");
+        loadUpcomingEvents(null, null, null, null, null);
+    }
+    
+    private void resetCombo(ComboBox<String> combo, String placeholder) {
+        combo.setValue(null);
+        combo.setPromptText(placeholder);
+        combo.setButtonCell(null);
+    }
+
+    private void loadUpcomingEvents(String type, String date, String gender, String costType, String keyword) {
         contentArea.getChildren().clear();
 
         JSONObject popularEvent = null;
         double bestRatio = -1.0;
 
         try {
-            String response = ApiClient.get("/events");
+            String endpoint;
+
+            boolean noFilters =
+                    (type == null || type.isBlank()) &&
+                    (date == null || date.isBlank()) &&
+                    (gender == null || gender.isBlank()) &&
+                    (costType == null || costType.isBlank()) &&
+                    (keyword == null || keyword.isBlank());
+
+            if (noFilters) {
+                endpoint = "/events";
+                appliedFiltersLabel.setText("No Filters Applied.");
+            } else {
+                StringBuilder sb = new StringBuilder("/events/search?");
+                boolean first = true;
+
+                if (type != null && !type.isBlank()) {
+                    sb.append("type=").append(java.net.URLEncoder.encode(type, java.nio.charset.StandardCharsets.UTF_8));
+                    first = false;
+                }
+                if (date != null && !date.isBlank()) {
+                    if (!first) sb.append("&");
+                    sb.append("date=").append(java.net.URLEncoder.encode(date, java.nio.charset.StandardCharsets.UTF_8));
+                    first = false;
+                }
+                if (gender != null && !gender.isBlank()) {
+                    if (!first) sb.append("&");
+                    sb.append("gender=").append(java.net.URLEncoder.encode(gender, java.nio.charset.StandardCharsets.UTF_8));
+                    first = false;
+                }
+                if (costType != null && !costType.isBlank()) {
+                    if (!first) sb.append("&");
+                    sb.append("costType=").append(java.net.URLEncoder.encode(costType, java.nio.charset.StandardCharsets.UTF_8));
+                    first = false;
+                }
+                if (keyword != null && !keyword.isBlank()) {
+                    if (!first) sb.append("&");
+                    sb.append("keyword=").append(java.net.URLEncoder.encode(keyword, java.nio.charset.StandardCharsets.UTF_8));
+                }
+
+                endpoint = sb.toString();
+                appliedFiltersLabel.setText(buildAppliedFiltersText(type, date, gender, costType, keyword));
+            }
+
+            String response = ApiClient.get(endpoint);
             JSONArray eventsArray = new JSONArray(response);
 
             TilePane cardsPane = new TilePane();
@@ -406,6 +510,9 @@ public class DashboardController {
 
     @FXML
     private void showMyBookings() {
+        filtersContainer.setManaged(false);
+        filtersContainer.setVisible(false);
+    
         pageTitleLabel.setText("My Bookings");
         pageSubtitleLabel.setText("View all events you have booked and manage them from here.");
         loadContent("/com/mohid/masu/student/view/myBookings.fxml");
@@ -413,6 +520,9 @@ public class DashboardController {
 
     @FXML
     private void showPublishedEvents() {
+        filtersContainer.setManaged(false);
+        filtersContainer.setVisible(false);
+    
         pageTitleLabel.setText("Published Events");
         pageSubtitleLabel.setText("Manage the events you created and published.");
         loadContent("/com/mohid/masu/student/view/publishedEvents.fxml");
@@ -420,6 +530,9 @@ public class DashboardController {
 
     @FXML
     private void showCreateEvent() {
+        filtersContainer.setManaged(false);
+        filtersContainer.setVisible(false);
+        
         pageTitleLabel.setText("Create Event");
         pageSubtitleLabel.setText("Publish a new event with details, location, and map support.");
         loadContent("/com/mohid/masu/student/view/createEvent.fxml");
@@ -427,6 +540,9 @@ public class DashboardController {
 
     @FXML
     private void showUpdatePassword() {
+        filtersContainer.setManaged(false);
+        filtersContainer.setVisible(false);
+        
         pageTitleLabel.setText("Update Password");
         pageSubtitleLabel.setText("Change your current password securely.");
         loadContent("/com/mohid/masu/student/view/updatePassword.fxml");
@@ -434,6 +550,9 @@ public class DashboardController {
     
     @FXML
     private void showRecentCancelledEvents() {
+        filtersContainer.setManaged(false);
+        filtersContainer.setVisible(false);
+    
         pageTitleLabel.setText("Recent Cancelled Events");
         pageSubtitleLabel.setText("View cancelled events from the last 7 days.");
         loadContent("/com/mohid/masu/student/view/cancelledEvents.fxml");
@@ -514,5 +633,50 @@ public class DashboardController {
         }
 
         return (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
+    }
+    
+    private String buildAppliedFiltersText(String type, String date, String gender, String costType, String keyword) {
+        StringBuilder sb = new StringBuilder();
+
+        if (gender != null && !gender.isBlank()) {
+            sb.append(formatPrettyValue(gender));
+        }
+        if (costType != null && !costType.isBlank()) {
+            if (sb.length() > 0) sb.append(" • ");
+            sb.append(formatPrettyValue(costType));
+        }
+        if (type != null && !type.isBlank()) {
+            if (sb.length() > 0) sb.append(" • ");
+            sb.append(type);
+        }
+        if (date != null && !date.isBlank()) {
+            if (sb.length() > 0) sb.append(" • ");
+            sb.append(formatPrettyDate(date));
+        }
+        if (keyword != null && !keyword.isBlank()) {
+            if (sb.length() > 0) sb.append(" • ");
+            sb.append("Keyword: ").append(keyword);
+        }
+
+        return sb.length() == 0 ? "No Filters Applied." : sb.toString();
+    }
+    
+    private String formatPrettyValue(String value) {
+        if ("BOYS".equalsIgnoreCase(value)) return "Boys";
+        if ("GIRLS".equalsIgnoreCase(value)) return "Girls";
+        if ("BOTH".equalsIgnoreCase(value)) return "Both";
+        if ("FREE".equalsIgnoreCase(value)) return "Free";
+        if ("PRICED".equalsIgnoreCase(value)) return "Priced";
+        return value;
+    }
+
+    private String formatPrettyDate(String rawDate) {
+        try {
+            java.time.LocalDate parsedDate = java.time.LocalDate.parse(rawDate);
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy");
+            return parsedDate.format(formatter);
+        } catch (Exception e) {
+            return rawDate;
+        }
     }
 }

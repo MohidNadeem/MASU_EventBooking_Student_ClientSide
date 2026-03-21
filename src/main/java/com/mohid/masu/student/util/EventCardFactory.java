@@ -56,6 +56,7 @@ public class EventCardFactory {
         boolean isCancelled = "CANCELLED".equalsIgnoreCase(status);
         boolean isPassed = "PASSED".equalsIgnoreCase(status);
         boolean isPopular = obj.optBoolean("isPopular", false);
+        boolean userHasRated = obj.optBoolean("userHasRated", false);
         
         HBox row1 = new HBox(10);
         row1.setAlignment(Pos.CENTER_LEFT);
@@ -122,12 +123,33 @@ public class EventCardFactory {
         row5.setAlignment(Pos.CENTER_LEFT);
         row5.getChildren().add(viewBtn);
 
+        HBox row6 = null;
+
         if ("BOOKINGS".equalsIgnoreCase(mode)) {
             Button unbookBtn = new Button("Unbook Event");
             unbookBtn.getStyleClass().add("primary-btn");
             unbookBtn.setDisable(cost > 0);
             unbookBtn.setOnAction(e -> onPrimaryAction.accept(obj));
             row5.getChildren().add(unbookBtn);
+
+            Button rateBtn = new Button(userHasRated ? "Rated" : "Rate Event");
+            rateBtn.getStyleClass().add("secondary-btn");
+
+            if (userHasRated) {
+                rateBtn.setDisable(true);
+            } else if (!isPassed) {
+                rateBtn.setDisable(true);
+            } else {
+                rateBtn.setOnAction(e -> {
+                    if (onSecondaryAction != null) {
+                        onSecondaryAction.accept(obj);
+                    }
+                });
+            }
+
+            row6 = new HBox(12);
+            row6.setAlignment(Pos.CENTER_LEFT);
+            row6.getChildren().add(rateBtn);
 
         } else if ("PUBLISHED".equalsIgnoreCase(mode)) {
             if (!isCancelled && !isPassed) {
@@ -136,7 +158,7 @@ public class EventCardFactory {
                 updateBtn.setOnAction(e -> onPrimaryAction.accept(obj));
                 row5.getChildren().add(updateBtn);
             }
-                
+
         } else if ("UPCOMING".equalsIgnoreCase(mode)) {
             Button bookBtn = new Button("Book Event");
             bookBtn.getStyleClass().add("primary-btn");
@@ -164,6 +186,10 @@ public class EventCardFactory {
                 row4,
                 row5
         );
+        
+        if (row6 != null) {
+            card.getChildren().add(row6);
+        }
 
         return card;
     }

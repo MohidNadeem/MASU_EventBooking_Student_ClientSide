@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -57,12 +58,15 @@ public class MyBookingsController {
                 String eventResponse = ApiClient.get("/events/" + eventId);
                 JSONObject eventObj = new JSONObject(eventResponse);
 
+                boolean hasRated = hasStudentRatedEvent(eventId, StudentSession.getStudentId());
+                eventObj.put("userHasRated", hasRated);
+
                 VBox card = EventCardFactory.createCard(
                         eventObj,
                         "BOOKINGS",
                         this::openEventDetails,
                         this::handleUnbookEvent,
-                        null
+                        this::handleRateEvent
                 );
 
                 cardsPane.getChildren().add(card);
@@ -213,6 +217,131 @@ public class MyBookingsController {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+    private boolean hasStudentRatedEvent(String eventId, String studentId) {
+        try {
+            String response = ApiClient.get("/events/" + eventId + "/ratings");
+            org.json.JSONArray ratingsArray = new org.json.JSONArray(response);
+
+            for (int i = 0; i < ratingsArray.length(); i++) {
+                org.json.JSONObject rating = ratingsArray.getJSONObject(i);
+                if (studentId.equals(rating.optString("studentId", ""))) {
+                    return true;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+    
+    private void handleRateEvent(JSONObject eventObj) {
+        try {
+            String eventId = eventObj.optString("id", "");
+            String eventTitle = eventObj.optString("title", "this event");
+
+            Stage dialog = new Stage();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.setTitle("Rate Event");
+
+            VBox root = new VBox(16);
+            root.setAlignment(Pos.CENTER);
+            root.setPadding(new Insets(22));
+            root.getStyleClass().add("custom-dialog-root");
+
+            Label title = new Label("Rate this event");
+            title.getStyleClass().add("dialog-title");
+
+            Label desc = new Label("How would you rate \"" + eventTitle + "\"?");
+            desc.getStyleClass().add("dialog-text");
+            desc.setWrapText(true);
+
+            HBox starRow = new HBox(10);
+            starRow.setAlignment(Pos.CENTER);
+
+            final int[] selectedStars = {0};
+            Button[] starButtons = new Button[5];
+
+            for (int i = 0; i < 5; i++) {
+                int stars = i + 1;
+                Button starBtn = new Button("★");
+                starBtn.getStyleClass().add("star-btn");
+
+                starBtn.setOnAction(e -> {
+                    selectedStars[0] = stars;
+                    for (int j = 0; j < 5; j++) {
+                        if (j < stars) {
+                            starButtons[j].getStyleClass().remove("star-btn");
+                            if (!starButtons[j].getStyleClass().contains("star-btn-selected")) {
+                                starButtons[j].getStyleClass().add("star-btn-selected");
+                            }
+                        } else {
+                            starButtons[j].getStyleClass().remove("star-btn-selected");
+                            if (!starButtons[j].getStyleClass().contains("star-btn")) {
+                                starButtons[j].getStyleClass().add("star-btn");
+                            }
+                        }
+                    }
+                });
+
+                starButtons[i] = starBtn;
+                starRow.getChildren().add(starBtn);
+            }
+
+            Label messageLabel = new Label();
+            messageLabel.getStyleClass().add("dialog-text");
+            messageLabel.setWrapText(true);
+
+            Button submitBtn = new Button("Submit Rating");
+            submitBtn.getStyleClass().add("primary-btn");
+
+            Button cancelBtn = new Button("Cancel");
+            cancelBtn.getStyleClass().add("secondary-btn");
+
+            submitBtn.setOnAction(e -> {
+                try {
+                    if (selectedStars[0] == 0) {
+                        messageLabel.setText("Please select a rating first.");
+                        return;
+                    }
+
+                    JSONObject requestBody = new JSONObject();
+                    requestBody.put("studentId", StudentSession.getStudentId());
+                    requestBody.put("stars", selectedStars[0]);
+
+                    String response = ApiClient.post("/events/" + eventId + "/rate", requestBody.toString());
+                    String msg = new JSONObject(response).optString("message", "Rating submitted.");
+
+                    dialog.close();
+                    showInfoDialog("Rating Status", msg);
+                    loadBookings();
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    messageLabel.setText("Failed to submit rating.");
+                }
+            });
+
+            cancelBtn.setOnAction(e -> dialog.close());
+
+            HBox buttons = new HBox(10, submitBtn, cancelBtn);
+            buttons.setAlignment(Pos.CENTER);
+
+            root.getChildren().addAll(title, desc, starRow, messageLabel, buttons);
+
+            Scene scene = new Scene(root, 430, 240);
+            scene.getStylesheets().add(getClass().getResource("/com/mohid/masu/student/assets/styles.css").toExternalForm());
+
+            dialog.setScene(scene);
+            dialog.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showInfoDialog("Rating Status", "Failed to open rating dialog.");
         }
     }
 }

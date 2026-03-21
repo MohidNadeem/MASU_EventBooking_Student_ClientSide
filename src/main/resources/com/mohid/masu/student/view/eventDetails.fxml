@@ -219,6 +219,23 @@
                         </StackPane>
                     </children>
                 </VBox>
+                
+                <VBox spacing="14" styleClass="content-card">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <children>
+                        <Label text="Nearby Locations" styleClass="section-title"/>
+                        <Separator/>
+
+                        <VBox fx:id="nearbyLocationsBox" spacing="12">
+                            <children>
+                                <Label text="Nearby places will appear here." styleClass="page-subtitle"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
             </children>
         </VBox>
     </content>

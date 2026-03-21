@@ -473,18 +473,6 @@
     -fx-background-radius: 14;
 }
 
-.date-picker {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-border-color: #d6e7d7;
-    -fx-border-radius: 12;
-}
-
-.date-picker .text-field {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-}
-
 .cancelled-status-badge {
     -fx-background-color: #fdeaea;
     -fx-text-fill: #c62828;
@@ -526,5 +514,94 @@
 
 .list-cell:filled:selected {
     -fx-background-color: #e9f5ea;
+    -fx-text-fill: #1B5E20;
+}
+
+.star-btn {
+    -fx-background-color: white;
+    -fx-text-fill: #b0b0b0;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 14;
+    -fx-border-color: #d6e7d7;
+    -fx-border-radius: 14;
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+
+.star-btn:hover {
+    -fx-background-color: #fff8dc;
+}
+
+.star-btn-selected {
+    -fx-background-color: #fff3c4;
+    -fx-text-fill: #d4a000;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 14;
+    -fx-border-color: #f0cf63;
+    -fx-border-radius: 14;
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+
+.date-picker {
+    -fx-background-color: #F8FFFA;
+    -fx-border-color: #C8E6C9;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-font-size: 14px;
+    -fx-pref-height: 40;
+}
+
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-padding: 8 10 8 10;
+    -fx-font-size: 14px;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0 12 12 0;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #2E7D32;
+}
+
+.date-picker:focused {
+    -fx-border-color: #2E7D32;
+    -fx-border-width: 1.5;
+    -fx-background-color: white;
+}
+
+.nearby-location-item {
+    -fx-background-color: #f8fbf8;
+    -fx-background-radius: 14;
+    -fx-border-color: #dbeedd;
+    -fx-border-radius: 14;
+    -fx-padding: 14 16 14 16;
+}
+
+.nearby-location-title {
+    -fx-text-fill: #1B5E20;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.nearby-location-meta {
+    -fx-text-fill: #4f6f5a;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.nearby-location-link {
+    -fx-text-fill: #2E7D32;
+    -fx-font-size: 12px;
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
+
+.nearby-location-link:hover {
     -fx-text-fill: #1B5E20;
 }
