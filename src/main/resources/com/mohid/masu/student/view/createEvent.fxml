@@ -1,13 +1,245 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mohid.masu.student.controller.CreateEventController"
       stylesheets="@../assets/styles.css"
-      spacing="10">
+      spacing="16"
+      styleClass="dashboard-bg">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
     <children>
-        <Label text="Create Event content will appear here." styleClass="page-subtitle"/>
+        <Label text="Create Event" styleClass="page-title"/>
+        <Label text="Fill in the details below to publish a new event." styleClass="page-subtitle"/>
+
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    vbarPolicy="AS_NEEDED"
+                    styleClass="transparent-scroll">
+
+            <content>
+                <VBox spacing="16" styleClass="content-card" maxWidth="980">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    
+                    <children>
+                        <!-- Title + Type -->
+                        <HBox spacing="12">
+                            <children>
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Event Title" styleClass="field-label"/>
+                                        <TextField fx:id="titleField" promptText="Enter event title" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" prefWidth="230">
+                                    <children>
+                                        <Label text="Event Type" styleClass="field-label"/>
+                                        <ComboBox fx:id="typeCombo" promptText="Select type" styleClass="modern-combo" maxWidth="1.7976931348623157E308"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Date + Time -->
+                        <HBox spacing="12">
+                            <children>
+                                <VBox spacing="6" prefWidth="220">
+                                    <children>
+                                        <Label text="Date" styleClass="field-label"/>
+                                        <DatePicker fx:id="datePicker"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Start Time" styleClass="field-label"/>
+                                        <TextField fx:id="startTimeField" promptText="HH:mm" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="End Time" styleClass="field-label"/>
+                                        <TextField fx:id="endTimeField" promptText="HH:mm" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" prefWidth="180">
+                                    <children>
+                                        <Label text="Duration" styleClass="field-label"/>
+                                        <TextField fx:id="durationField" promptText="Auto calculated" styleClass="modern-field" disable="true"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        
+                        <!-- Currency + Cost + Capacity -->
+                        <HBox spacing="12">
+                            <children>
+                                <VBox spacing="6" prefWidth="160">
+                                    <children>
+                                        <Label text="Currency" styleClass="field-label"/>
+                                        <ComboBox fx:id="currencyCombo" promptText="Currency" styleClass="modern-combo" maxWidth="1.7976931348623157E308"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Cost" styleClass="field-label"/>
+                                        <TextField fx:id="costField" promptText="0 for free event" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Max Participants" styleClass="field-label"/>
+                                        <TextField fx:id="maxParticipantsField" promptText="Enter max participants" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Reserved Alumni Slots" styleClass="field-label"/>
+                                        <TextField fx:id="alumniSlotsField" promptText="Enter alumni slots" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Description -->
+                        <VBox spacing="6">
+                            <children>
+                                <Label text="Description" styleClass="field-label"/>
+                                <TextArea fx:id="descriptionArea"
+                                          promptText="Write event description"
+                                          prefRowCount="4"
+                                          wrapText="true"/>
+                            </children>
+                        </VBox>
+                        
+                        <!-- Venue + Location -->
+                        <HBox spacing="12">
+                            <children>
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Venue Name" styleClass="field-label"/>
+                                        <TextField fx:id="venueField" promptText="Enter venue name" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Location" styleClass="field-label"/>
+                                        <TextField fx:id="locationField" promptText="Enter city / area" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        
+                        <!-- Long / Lat -->
+                        <VBox spacing="10">
+                            <children>
+                                <Label text="Search Event Location" styleClass="field-label"/>
+
+                                <TextField fx:id="locationSearchField"
+                                           promptText="Search place, address, or area"
+                                           styleClass="modern-field"/>
+
+                                <ListView fx:id="locationSuggestionsList" prefHeight="140.0"/>
+
+                                <HBox spacing="12">
+                                    <children>
+                                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label text="Latitude" styleClass="field-label"/>
+                                                <TextField fx:id="latitudeField" promptText="Latitude" styleClass="modern-field" disable="true"/>
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label text="Longitude" styleClass="field-label"/>
+                                                <TextField fx:id="longitudeField" promptText="Longitude" styleClass="modern-field" disable="true"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Country + Postal + Gender -->
+                        <HBox spacing="12">
+                            <children>
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Country Code" styleClass="field-label"/>
+                                        <TextField fx:id="countryField" promptText="e.g. PK, GB" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Postal Code" styleClass="field-label"/>
+                                        <TextField fx:id="postalCodeField" promptText="Enter postal code" styleClass="modern-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6" prefWidth="220">
+                                    <children>
+                                        <Label text="Audience" styleClass="field-label"/>
+                                        <ComboBox fx:id="genderCombo" promptText="Select audience" styleClass="modern-combo" maxWidth="1.7976931348623157E308"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        
+                        <VBox spacing="10">
+                            <children>
+                                <Label text="Map Preview" styleClass="field-label"/>
+                                    <ImageView fx:id="mapPreviewImage"
+                                               fitWidth="900"
+                                               fitHeight="280"
+                                               preserveRatio="false"
+                                               smooth="true"/>
+                            </children>
+                        </VBox>
+                        
+                        <Label fx:id="messageLabel" text="" styleClass="page-subtitle" wrapText="true"/>
+
+                        <HBox spacing="12">
+                            <children>
+                                <Button text="Create Event" onAction="#handleCreateEvent" styleClass="primary-btn"/>
+                                <Button text="Clear Event Form" onAction="#clearForm" styleClass="primary-btn"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                            </children>
+                        </HBox>
+
+                </children>
+
+               </VBox>
+            </content>
+
+       </ScrollPane>
     </children>
 </VBox>

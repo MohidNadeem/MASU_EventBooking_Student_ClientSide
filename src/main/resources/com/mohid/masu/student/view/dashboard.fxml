@@ -25,6 +25,7 @@
                 <VBox spacing="4">
                     <children>
                         <Label text="MASU" styleClass="sidebar-title"/>
+                        <Label text="My Artificial Student Union" styleClass="sidebar-subtitle"/>
                         <Label text="Student Dashboard" styleClass="sidebar-subtitle"/>
                     </children>
                 </VBox>

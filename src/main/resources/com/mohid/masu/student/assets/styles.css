@@ -493,3 +493,20 @@
     -fx-padding: 8 12 8 12;
     -fx-background-radius: 14;
 }
+
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #d6e7d7;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.list-cell {
+    -fx-padding: 10 12 10 12;
+    -fx-font-size: 13px;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #e9f5ea;
+    -fx-text-fill: #1B5E20;
+}

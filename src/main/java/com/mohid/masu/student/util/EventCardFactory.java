@@ -61,12 +61,16 @@ public class EventCardFactory {
         Label titleLabel = new Label(title);
         titleLabel.getStyleClass().add("event-card-title");
         titleLabel.setWrapText(true);
+        titleLabel.setMaxWidth(240);
+
+        HBox.setHgrow(titleLabel, Priority.ALWAYS);
 
         Region spacer1 = new Region();
         HBox.setHgrow(spacer1, Priority.ALWAYS);
 
         Label typeBadge = new Label(type);
         typeBadge.getStyleClass().add("event-type-badge");
+        typeBadge.setMinWidth(Region.USE_PREF_SIZE);
 
         row1.getChildren().addAll(titleLabel, spacer1, typeBadge);
 

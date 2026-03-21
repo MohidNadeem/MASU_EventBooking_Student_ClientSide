@@ -3,6 +3,7 @@ module com.mohid.masu.student {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.json;
+    requires java.desktop;
 
     // For HTTP Client (Java 11+)
     requires java.net.http;

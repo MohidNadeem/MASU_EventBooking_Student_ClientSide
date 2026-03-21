@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
 
 <ScrollPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -120,7 +122,11 @@
 
                 <HBox spacing="18">
                     <children>
-                        <VBox spacing="14" styleClass="content-card" HBox.hgrow="ALWAYS">
+                        <VBox spacing="14"
+                              styleClass="content-card"
+                              prefWidth="480"
+                              minWidth="480"
+                              maxWidth="480">
                             <padding>
                                 <Insets top="20" right="20" bottom="20" left="20"/>
                             </padding>
@@ -128,13 +134,26 @@
                             <children>
                                 <Label text="Location Details" styleClass="section-title"/>
                                 <Separator/>
-                                <Label fx:id="venueLabel" styleClass="details-info-line"/>
-                                <Label fx:id="postalCodeLabel" styleClass="details-info-line"/>
-                                <Label fx:id="countryLabel" styleClass="details-info-line"/>
+                                <Label fx:id="venueLabel"
+                                       styleClass="details-info-line"
+                                       wrapText="true"
+                                       maxWidth="440"/>
+                                <Label fx:id="postalCodeLabel"
+                                       styleClass="details-info-line"
+                                       wrapText="true"
+                                       maxWidth="440"/>
+                                <Label fx:id="countryLabel"
+                                       styleClass="details-info-line"
+                                       wrapText="true"
+                                       maxWidth="440"/>
                             </children>
                         </VBox>
 
-                        <VBox spacing="14" styleClass="content-card" HBox.hgrow="ALWAYS">
+                        <VBox spacing="14"
+                              styleClass="content-card"
+                              prefWidth="480"
+                              minWidth="480"
+                              maxWidth="480">
                             <padding>
                                 <Insets top="20" right="20" bottom="20" left="20"/>
                             </padding>
@@ -149,13 +168,19 @@
                                 </HBox>
 
                                 <Separator/>
-                                <Label fx:id="publisherUsernameLabel" styleClass="details-info-line"/>
-                                <Label fx:id="publisherNameLabel" styleClass="details-info-line"/>
+                                <Label fx:id="publisherUsernameLabel"
+                                       styleClass="details-info-line"
+                                       wrapText="true"
+                                       maxWidth="440"/>
+                                <Label fx:id="publisherNameLabel"
+                                       styleClass="details-info-line"
+                                       wrapText="true"
+                                       maxWidth="440"/>
                             </children>
                         </VBox>
                     </children>
                 </HBox>
-
+                
                 <VBox spacing="14" styleClass="content-card">
                     <padding>
                         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -167,10 +192,27 @@
 
                         <StackPane prefHeight="220" styleClass="map-placeholder-box">
                             <children>
-                                <VBox alignment="CENTER" spacing="8">
+                                <VBox alignment="CENTER" spacing="8" styleClass="content-card">
+                                    <padding>
+                                        <Insets top="20" right="20" bottom="20" left="20"/>
+                                    </padding>
+
                                     <children>
-                                        <Label text="Map Preview Area" styleClass="map-placeholder-title"/>
-                                        <Label text="Will add Google Map section later." styleClass="page-subtitle"/>
+                                        <Label text="Map Preview" styleClass="section-title"/>
+                                        <Separator/>
+
+                                        <ImageView fx:id="mapPreviewImage"
+                                                   fitWidth="760"
+                                                   fitHeight="260"
+                                                   preserveRatio="false"
+                                                   focusTraversable="false"
+                                                   smooth="true"/>
+
+                                        <Button fx:id="openMapBtn"
+                                                text="Open in Google Maps"
+                                                onAction="#handleOpenInMap"
+                                                styleClass="primary-btn"
+                                                focusTraversable="false"/>
                                     </children>
                                 </VBox>
                             </children>

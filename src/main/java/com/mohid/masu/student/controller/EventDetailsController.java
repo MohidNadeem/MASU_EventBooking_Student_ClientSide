@@ -1,10 +1,15 @@
 package com.mohid.masu.student.controller;
 
 import com.mohid.masu.student.service.ApiClient;
+import java.awt.Desktop;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.json.JSONObject;
 
 public class EventDetailsController {
@@ -40,7 +45,13 @@ public class EventDetailsController {
     @FXML private Label publisherStatusBadgeLabel;
 
     @FXML private Label descriptionLabel;
-    
+
+    @FXML private ImageView mapPreviewImage;
+    @FXML private Button openMapBtn;
+
+    private double eventLatitude;
+    private double eventLongitude;
+
     public void setEventId(String eventId) {
         loadEventDetails(eventId);
     }
@@ -72,20 +83,21 @@ public class EventDetailsController {
             String status = event.optString("status", "-");
             String publisherId = event.optString("publisherId", "-");
             String description = event.optString("description", "-");
-            double lat = event.optDouble("latitude", 0.0);
-            double lng = event.optDouble("longitude", 0.0);
+
+            eventLatitude = event.optDouble("latitude", 0.0);
+            eventLongitude = event.optDouble("longitude", 0.0);
 
             double avgRating = root.optDouble("averageRating", 0.0);
 
             typeBadgeLabel.setText(type);
             genderBadgeLabel.setText(getGenderIcon(gender) + " " + gender);
-            
+
             if (avgRating <= 0.0) {
                 headerRatingLabel.setText("No Ratings Marked");
             } else {
                 headerRatingLabel.setText("★ " + String.format("%.1f", avgRating) + " / 5");
             }
-            
+
             titleLabel.setText(title);
             subtitleLabel.setText(venue + ", " + location);
 
@@ -109,10 +121,54 @@ public class EventDetailsController {
 
             loadWeather(root.optString("weather", ""));
             loadPublisherInfo(publisherId);
+            updateStaticMapPreview(eventLatitude, eventLongitude);
+
+            if (openMapBtn != null) {
+                openMapBtn.setDisable(eventLatitude == 0.0 && eventLongitude == 0.0);
+            }
+            
+            javafx.application.Platform.runLater(() -> titleLabel.requestFocus());
 
         } catch (Exception e) {
             e.printStackTrace();
             titleLabel.setText("Failed to load event details");
+            if (openMapBtn != null) {
+                openMapBtn.setDisable(true);
+            }
+        }
+    }
+
+    private void updateStaticMapPreview(double lat, double lng) {
+        try {
+            if (lat == 0.0 && lng == 0.0) {
+                return;
+            }
+
+            String response = ApiClient.get("/external/static-map?lat=" + lat + "&lng=" + lng);
+            JSONObject obj = new JSONObject(response);
+
+            String imageUrl = obj.optString("imageUrl", "");
+            if (!imageUrl.isBlank()) {
+                mapPreviewImage.setImage(new Image(imageUrl, true));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleOpenInMap() {
+        try {
+            if (eventLatitude == 0.0 && eventLongitude == 0.0) {
+                return;
+            }
+
+            String url = "https://www.google.com/maps?q=" + eventLatitude + "," + eventLongitude;
+            Desktop.getDesktop().browse(new URI(url));
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
